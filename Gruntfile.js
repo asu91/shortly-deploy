@@ -7,7 +7,7 @@ module.exports = function(grunt) {
         seperator: ';'
       },
       dist: {
-        src: ['app/**/*.js', 'lib/*.js', 'public/**/*.js', '*.js'],
+        src: ['public/**/*.js'],
         dest: 'public/dist/built.js'
       }
     },
@@ -73,7 +73,7 @@ module.exports = function(grunt) {
 
     shell: {
       prodServer: {
-
+        command: 'git add . ; git commit ; Updating ...; git push live master'
       }
     },
   });
@@ -88,6 +88,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-nodemon');
 
+
+
+
+  ////////////////////////////////////////////////////
+  // Main grunt tasks
+  ////////////////////////////////////////////////////
+
   grunt.registerTask('server-dev', function (target) {
     // Running nodejs in a different process and displaying output on the main console
     var nodemon = grunt.util.spawn({
@@ -98,41 +105,43 @@ module.exports = function(grunt) {
     nodemon.stdout.pipe(process.stdout);
     nodemon.stderr.pipe(process.stderr);
 
-    grunt.task.run([ 'watch' ]);
+    grunt.task.run([ 'watch' , 'shell']);
   });
 
-
-  grunt.registerTask('upload', function(n) {
-    if (grunt.option('prod')) {
-      // add your production server task here
-    }
-    grunt.task.run([ 'server-dev' ]);
-  });
-
-  ////////////////////////////////////////////////////
-  // Main grunt tasks
-  ////////////////////////////////////////////////////
 
   grunt.registerTask('test', [
-    'eslint', 'mochaTest'
+     'eslint', 'mochaTest'
   ]);
 
   grunt.registerTask('build', [
     'concat', 'uglify'
   ]);
 
+
   grunt.registerTask('upload', function(n) {
     if (grunt.option('prod')) {
-      // add your production server task here
-    } else {
-      grunt.task.run([ 'server-dev' ]);
+      
+      var nodemon = grunt.util.spawn({
+      cmd: 'grunt',
+      grunt: true,
+      args: 'nodemon'
+    });
+
+    nodemon.stdout.pipe(process.stdout);
+    nodemon.stderr.pipe(process.stderr);
+
     }
+    grunt.task.run([ 'server-dev' ]);
   });
 
-  grunt.registerTask('deploy', [
-    'nodemon'
+  grunt.registerTask('deploy', function () {
+    if (grunt.option('prod')) {
+      grunt.task.run(['upload']);
+    } else {
+      grunt.task.run(['test', 'build']);
+    }
+  });
     // add your deploy tasks here
-  ]);
 
 
 };
