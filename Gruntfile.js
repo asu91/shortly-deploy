@@ -3,6 +3,15 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
+      options: {
+        seperator: ';'
+      },
+      dist: {
+        src: ['app/collections/links.js', 'app/collections/users.js', 'app/models/link.js', 'app/models/users.js', 'app/config.js',
+        'lib/request-handler.js', 'lib/utility.js', 'public/client/app.js', 'public/client/createLinkView.js', 'public/client/link.js',
+        'public/client/links.js', 'public/client/linksView.js', 'public/client/linkView.js', 'public/client/router.js', 'server-config.js', 'server.js'],
+        dest: 'public/dist/built.js'
+      }
     },
 
     mochaTest: {
@@ -21,11 +30,20 @@ module.exports = function(grunt) {
     },
 
     uglify: {
+      options: {
+        banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+      },
+      dist: {
+        files: {
+          'public/dist/built.min.js': ['public/dist/built.js']
+        } 
+      }
     },
 
     eslint: {
       target: [
         // Add list of files to lint here
+        'public/dist/built.min.js'
       ]
     },
 
@@ -105,6 +123,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('deploy', [
+    'nodemon'
     // add your deploy tasks here
   ]);
 
