@@ -11,12 +11,6 @@ module.exports = function(grunt) {
         dest: 'public/dist/built.js'
       }
     },
-    gitpush: {
-      your_target:{
-        remote: 'live2',
-        branch: 'master'
-      }
-    },
 
     mochaTest: {
       test: {
@@ -105,12 +99,12 @@ module.exports = function(grunt) {
     nodemon.stdout.pipe(process.stdout);
     nodemon.stderr.pipe(process.stderr);
 
-    grunt.task.run([ 'watch' , 'shell']);
+    grunt.task.run(['shell']);
   });
 
 
   grunt.registerTask('test', [
-     'eslint', 'mochaTest'
+    'eslint', 'mochaTest'
   ]);
 
   grunt.registerTask('build', [
@@ -122,13 +116,13 @@ module.exports = function(grunt) {
     if (grunt.option('prod')) {
       
       var nodemon = grunt.util.spawn({
-      cmd: 'grunt',
-      grunt: true,
-      args: 'nodemon'
-    });
+        cmd: 'grunt',
+        grunt: true,
+        args: 'nodemon'
+      });
 
-    nodemon.stdout.pipe(process.stdout);
-    nodemon.stderr.pipe(process.stderr);
+      nodemon.stdout.pipe(process.stdout);
+      nodemon.stderr.pipe(process.stderr);
 
     }
     grunt.task.run([ 'server-dev' ]);
