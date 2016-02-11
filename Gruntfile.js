@@ -130,7 +130,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('deploy', function () {
     if (grunt.option('prod')) {
-      grunt.task.run(['upload']);
+      grunt.task.run(['watch', 'shell']);
     } else {
       grunt.task.run(['test', 'build']);
     }
