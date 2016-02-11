@@ -7,10 +7,14 @@ module.exports = function(grunt) {
         seperator: ';'
       },
       dist: {
-        src: ['app/collections/links.js', 'app/collections/users.js', 'app/models/link.js', 'app/models/users.js', 'app/config.js',
-        'lib/request-handler.js', 'lib/utility.js', 'public/client/app.js', 'public/client/createLinkView.js', 'public/client/link.js',
-        'public/client/links.js', 'public/client/linksView.js', 'public/client/linkView.js', 'public/client/router.js', 'server-config.js', 'server.js'],
+        src: ['app/**/*.js', 'lib/*.js', 'public/**/*.js', '*.js'],
         dest: 'public/dist/built.js'
+      }
+    },
+    gitpush: {
+      your_target:{
+        remote: 'live2',
+        branch: 'master'
       }
     },
 
@@ -43,7 +47,7 @@ module.exports = function(grunt) {
     eslint: {
       target: [
         // Add list of files to lint here
-        'public/dist/built.min.js'
+        'app/**/*.js', 'lib/*.js', 'public/**/*.js', '*.js'
       ]
     },
 
@@ -69,10 +73,12 @@ module.exports = function(grunt) {
 
     shell: {
       prodServer: {
+
       }
     },
   });
 
+  grunt.loadNpmTasks('grunt-git');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
@@ -108,10 +114,11 @@ module.exports = function(grunt) {
   ////////////////////////////////////////////////////
 
   grunt.registerTask('test', [
-    'mochaTest'
+    'eslint', 'mochaTest'
   ]);
 
   grunt.registerTask('build', [
+    'concat', 'uglify'
   ]);
 
   grunt.registerTask('upload', function(n) {
