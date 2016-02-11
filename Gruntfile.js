@@ -8,7 +8,7 @@ module.exports = function(grunt) {
         seperator: ';'
       },
       dist: {
-        src: ['public/**/*.js'],
+        src: ['public/client/*.js'],
         dest: 'public/dist/built.js'
       }
     },
@@ -29,9 +29,6 @@ module.exports = function(grunt) {
     },
 
     uglify: {
-      options: {
-        banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
-      },
       dist: {
         files: {
           'public/dist/built.min.js': ['public/dist/built.js']
@@ -78,9 +75,9 @@ module.exports = function(grunt) {
     shell: {
       prodServer: {
         command: [
-        'git add .',
-        'git commit -m "Updating server" ',
-        'git push live2 master'
+          'git add .',
+          'git commit -m "Updating server" ',
+          'git push live2 master'
         ].join('&&')
       }
     },
