@@ -2,6 +2,7 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    
     concat: {
       options: {
         seperator: ';'
@@ -46,6 +47,15 @@ module.exports = function(grunt) {
     },
 
     cssmin: {
+      target: {
+        files: [{
+          expand: true,
+          cwd: 'public',
+          src: ['*.css'],
+          dest: 'public/dist',
+          ext: '.min.css'
+        }]
+      }
     },
 
     watch: {
@@ -67,7 +77,7 @@ module.exports = function(grunt) {
 
     shell: {
       prodServer: {
-        command: 'git add . ; git commit ; Updating ...; git push live master'
+        command: 'git add . ; git commit ; Updating ... ; git push live master'
       }
     },
   });
@@ -108,7 +118,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build', [
-    'concat', 'uglify'
+    'concat', 'uglify', 'cssmin'
   ]);
 
 
@@ -130,7 +140,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('deploy', function () {
     if (grunt.option('prod')) {
-      grunt.task.run(['watch', 'shell']);
+      grunt.task.run(['shell']);
     } else {
       grunt.task.run(['test', 'build']);
     }
