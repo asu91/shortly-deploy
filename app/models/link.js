@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 
 var linkSchema = mongoose.Schema({
   url: String,
+  link: String,
   baseUrl: String,
   code: String,
   title: String,

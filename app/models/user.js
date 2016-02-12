@@ -1,4 +1,3 @@
-var db = require('../config');
 var bcrypt = require('bcrypt-nodejs');
 var Promise = require('bluebird');
 var mongoose = require('mongoose');
@@ -24,7 +23,7 @@ userSchema.pre('save', function(next){
 User.prototype.comparePassword = function(password, callback){
   bcrypt.compare(password, this.password, function(err, match){
     if(err){
-      callback(err, null);
+      callback(err);
     } else {
       callback(null, match);
     }
